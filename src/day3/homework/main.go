@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"bytes"
+	"fmt"
+	"strings"
+	"strconv"
+)
 
 func multiplication() {
 	for i := 1; i < 10; i++ {
@@ -42,14 +47,51 @@ func countNumber(str string) {
 	for _, v := range str {
 		switch {
 		case v <= 90 && v >= 65 || v >= 97 && v <= 122:
-			res += 1
+			res++
 		}
 	}
 	fmt.Println(res)
 }
 
-func bigNumber(a, b string) {
+func bigNumber(a, b string)string {
+	if len(a) < len(b) {
+		a = strings.Repeat("0", len(b)-len(a)) + a
+	} else {
+		b = strings.Repeat("0", len(a)-len(b)) + b
+	}
+	strLen := len(a)
+	nums := make([]uint8, strLen)
+	addOne := false
+	for i := 0; i < strLen; i++ {
+		numA := a[strLen-i-1]-'0'
+		numB := b[strLen-i-1]-'0'
+		sum:= numA + numB
+		if addOne {
+			sum++
+		}
+		if sum >9{
+			sum -= 10
+			addOne = true 
+		} else{
+			addOne = false
+		}
+		nums[i] = sum
+	}
+	result := convertToString(nums)  
+    //进位，最前面补1  
+    if addOne {  
+        result = "1" + result  
+    }  
+  
+    return result 
+}
 
+func convertToString(nums []uint8) string{
+	var b bytes.Buffer
+	for i := len(nums) - 1; i >= 0; i-- {  
+        b.WriteString(strconv.Itoa(int(nums[i])))
+    }  
+    return b.String() 
 }
 
 func main() {
