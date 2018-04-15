@@ -1,10 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"strings"
-	"strconv"
 )
 
 func multiplication() {
@@ -53,45 +51,38 @@ func countNumber(str string) {
 	fmt.Println(res)
 }
 
-func bigNumber(a, b string)string {
-	if len(a) < len(b) {
-		a = strings.Repeat("0", len(b)-len(a)) + a
-	} else {
-		b = strings.Repeat("0", len(a)-len(b)) + b
-	}
-	strLen := len(a)
-	nums := make([]uint8, strLen)
-	addOne := false
-	for i := 0; i < strLen; i++ {
-		numA := a[strLen-i-1]-'0'
-		numB := b[strLen-i-1]-'0'
-		sum:= numA + numB
-		if addOne {
-			sum++
-		}
-		if sum >9{
-			sum -= 10
-			addOne = true 
-		} else{
-			addOne = false
-		}
-		nums[i] = sum
-	}
-	result := convertToString(nums)  
-    //进位，最前面补1  
-    if addOne {  
-        result = "1" + result  
-    }  
-  
-    return result 
-}
+func bigNumber(str1, str2 string) (result string) {
 
-func convertToString(nums []uint8) string{
-	var b bytes.Buffer
-	for i := len(nums) - 1; i >= 0; i-- {  
-        b.WriteString(strconv.Itoa(int(nums[i])))
-    }  
-    return b.String() 
+	if len(str1) == 0 && len(str2) == 0 {
+		result = "0"
+		return
+	}
+
+	if len(str1) < len(str2) {
+		str1 = strings.Repeat("0", len(str2)-len(str1)) + str1
+	} else if len(str1) > len(str2) {
+		str2 = strings.Repeat("0", len(str1)-len(str2)) + str2
+	}
+
+	var index = len(str1) - 1
+	var left int
+	for index >= 0 {
+		c1 := str1[index] - '0'
+		c2 := str2[index] - '0'
+		sum := int(c1) + int(c2) + left
+		if sum >= 10 {
+			left = 1
+		} else {
+			left = 0
+		}
+		c3 := (sum % 10) + '0'
+		result = fmt.Sprintf("%c%s", c3, result)
+		index--
+	}
+	if left == 1 {
+		result = fmt.Sprintf("1%s", result)
+	}
+	return
 }
 
 func main() {
@@ -99,4 +90,6 @@ func main() {
 	isPrefectNumber(6)
 	fmt.Println(isPalindrome("aba"))
 	countNumber("ABC abc")
+	fmt.Println(bigNumber("1623", "456"))
+
 }
