@@ -1,10 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 func main()  {
 var c bool
 just(c)
+test(c)
 
 }
 
@@ -13,4 +17,8 @@ func just(a interface{} )  {
 	case bool:
 		fmt.Println("It's boolean")
 	}
+}
+
+func test(a interface{}){
+	fmt.Println(reflect.TypeOf(a))
 }
