@@ -5,20 +5,20 @@ import (
 	"reflect"
 )
 
-func main()  {
-var c bool
-just(c)
-test(c)
+func main() {
+	var c bool
+	just(c)
+	test(c)
 
 }
 
-func just(a interface{} )  {
+func just(a interface{}) {
 	switch a.(type) {
 	case bool:
 		fmt.Println("It's boolean")
 	}
 }
 
-func test(a interface{}){
+func test(a interface{}) {
 	fmt.Println(reflect.TypeOf(a))
 }
